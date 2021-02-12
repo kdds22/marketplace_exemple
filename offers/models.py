@@ -1,5 +1,5 @@
 from django.db import models
-import datetime
+from datetime import datetime, timedelta
 from client.models import ClientModel
 
 
@@ -11,7 +11,7 @@ class HistoryOfferModel(models.Model):
         db_table = 'history_offers'
     
     def save(self, *args, **kwargs):
-        self.last_call = datetime.now() + datetime.timedelta(minutes=10)
+        self.last_call = datetime.now() + timedelta(minutes=10)
         super(HistoryOfferModel, self).save(*args, **kwargs)
 
 
