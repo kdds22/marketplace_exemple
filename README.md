@@ -93,3 +93,34 @@
         1. caso seja nova
         2. +30 dias
     5. enviar proposta
+
+
+# Utilizando API
+
+- start server:
+    - python3 manage.py runserver
+
+- [GET,POST] http://127.0.0.1:8000/clients/
+
+    ```json
+    {
+        "cpf":"11122233300",
+        "name":"Fulano Beltrano do Sicrano",
+        "born_date":"1901-01-01",
+        "email":"fulaninho@email.com",
+        "phone":"+55099912345678",
+        "monthly_income":999999.00
+    }
+    ```
+- [GET,POST] http://127.0.0.1:8000/offers/
+
+    ```json
+    {
+        "cpf":"11122233300",
+        "name":"Fulano Beltrano do Sicrano",
+        "born_date":"1901-01-01",
+        "email":"fulaninho@email.com",
+        "phone":"+55099912345678",
+        "monthly_income":999999.00
+    }
+    ```

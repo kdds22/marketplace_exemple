@@ -9,6 +9,7 @@ from helpers.offer_service import OfferService
 # Create your views here.
 class OffersListView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
+    queryset = OfferModel.objects.all()
     serializer_class = OfferSerializer
     
     def post(self, request, *args, **kwargs):
