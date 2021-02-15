@@ -61,9 +61,7 @@ class OfferService(object):
             return self.search(client_data=client_data, client_modifiable=False)
         
         
-    def search_client(self, client_data, client_modifiable=True):
-        self.instance_client = self.client(client=client_data)
-        
+    def search_client(self, client_data, client_modifiable=True):        
         self.query_db_client = ClientModel.objects.filter(
             cpf=client_data['cpf'],
             name=client_data['name'],
