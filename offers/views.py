@@ -15,3 +15,7 @@ class OffersListView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         offers = OfferService().search(client_data=self.request.data)
         return Response({"Offers": offers.serialized})
+    
+    def get(self, request, *args, **kwargs):
+        offers = OfferService().search(client_data=self.request.data, client_modifiable=False)
+        return Response({"Offers by Client": offers.serialized})

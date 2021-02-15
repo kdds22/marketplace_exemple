@@ -35,7 +35,7 @@ class OfferService(object):
     def search(self, client_data, client_modifiable=True):
         self.instance_client = self.client(client=client_data)
         self.query_db = OfferModel.objects.filter(
-            history_offers__last_call=datetime.now(),
+            history_offers__last_call__gt=datetime.now(),
             history_offers__client__cpf=client_data['cpf'],
             history_offers__client__name=client_data['name'],
             history_offers__client__born_date=client_data['born_date'],

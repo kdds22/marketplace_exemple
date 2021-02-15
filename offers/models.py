@@ -4,7 +4,7 @@ from client.models import ClientModel
 
 
 class HistoryOfferModel(models.Model):
-    last_call = models.DateField(blank=True, null=False)
+    last_call = models.DateTimeField(blank=True, null=False)
     client = models.ForeignKey(ClientModel, on_delete=models.PROTECT, related_name='client_history_offer', blank=False, null=False)
 
     class Meta:
@@ -12,6 +12,7 @@ class HistoryOfferModel(models.Model):
     
     def save(self, *args, **kwargs):
         self.last_call = datetime.now() + timedelta(minutes=10)
+        print(self.last_call)
         super(HistoryOfferModel, self).save(*args, **kwargs)
 
 
