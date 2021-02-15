@@ -75,18 +75,26 @@ class ProposalService(object):
         else:
             return {"message":"Oferta enviada não coincide com a base de dados"}
     
-    def search_client(self, proposal_data):        
-        self.query_db_client = ClientService.filter_client(self, proposal_data['client'])
-        
-        if self.query_db_client.exists():
-            self.query_db = OfferService.filter_history_offer(self,proposal_data['client'],True)
+    def search_client(self, proposal_data):
+        try:
+            self.query_db_client = ClientService.filter_client(self, proposal_data['client'])
             
-            if self.query_db.exists():
-                return self.if_offer_exist(proposal_data)
-            
+            if self.query_db_client.exists():
+                self.query_db = OfferService.filter_history_offer(self,proposal_data['client'],True)
+                
+                if self.query_db.exists():
+                    return self.if_offer_exist(proposal_data)
+                
+                else:
+                    return {"message":"Ainda não há ofertas válidas para o cliente informado."}
             else:
-                return {"message":"Ainda não há ofertas válidas para o cliente informado."}
-        else:
-            return {"message":"O cliente informado é invalido."}
+                return {"message":"O cliente informado é invalido."}
+        except Exception as e:
+            if str(e) == "'client'":
+                return {"message":"Não foi informado um cliente."}
+            elif str(e) == "'offer'":
+                return {"message":"Não foi informado uma oferta."}
+            else:
+                return {"message":str(e)}
     
     
