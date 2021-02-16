@@ -1,14 +1,5 @@
-from datetime import datetime
-
-import requests
-import json
-import logging
-
 from client.models import ClientModel
 from client.serializers import ClientSerializer
-
-from django.db.models import Count
-
 
 class ClientService(object):
     def __init__(self):

@@ -5,9 +5,7 @@ import json
 import logging
 
 from offers.models import HistoryOfferModel, OfferModel
-from client.models import ClientModel
 from offers.serializers import OfferSerializer
-from client.serializers import ClientSerializer
 from .client_service import ClientService
 from django.db.models import Count
 

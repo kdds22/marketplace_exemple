@@ -4,10 +4,7 @@ import requests
 import json
 import logging
 
-from offers.models import OfferModel
-from client.models import ClientModel
 from proposals.models import ProposalModel
-from client.serializers import ClientSerializer
 from .client_service import ClientService
 from .offer_service import OfferService
 from proposals.serializers import ProposalSerializer
