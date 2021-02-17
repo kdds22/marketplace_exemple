@@ -13,6 +13,19 @@
     phone | string | max:20
     monthly_income | decimal | max:8(2)
 
+    ```python
+    class ClientModel(models.Model):
+        cpf = models.CharField(max_length=14,blank=True, null=False)
+        name = models.CharField(max_length=255, blank=True, null=False)
+        born_date = models.DateField(blank=True, null=True)
+        email = models.EmailField(max_length=255, blank=True, null=True)
+        phone = models.CharField(max_length=20, blank=True, null=False)
+        monthly_income = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=False)
+        
+        class Meta:
+            db_table = 'client'
+    ```
+
 - OFERTA:
 
     NAME | TYPE | EXTRAS
@@ -25,6 +38,21 @@
     total_value | decimal | max:8(2)
     history_offers | ForeignKey(OFERTA_HISTORICO) | 
 
+    ```python
+    class OfferModel(models.Model):
+        partner_id = models.IntegerField(blank=True, null=False)
+        partner_name = models.CharField(max_length=150, blank=True, null=False)
+        value = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=False)
+        installments = models.IntegerField(blank=True, null=False)
+        tax_rate_percent_montly = models.FloatField(blank=True, null=False)
+        total_value = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=False)
+        history_offers = models.ForeignKey(HistoryOfferModel, on_delete=models.CASCADE, related_name='history_offers_fk', blank=False, null=True)
+        
+        class Meta:
+            db_table = 'offers' 
+
+    ```
+
 - OFERTA_HISTORICO:
 *** Regra do projeto: endpoint tem validade de 10 min por cliente
 
@@ -32,6 +60,15 @@
     ---- | ---- | ------
 	last_call | datetime | 
 	client | ForeignKey(CLIENTE) | 
+
+    ```python
+        class HistoryOfferModel(models.Model):
+            last_call = models.DateTimeField(blank=True, null=False)
+            client = models.ForeignKey(ClientModel, on_delete=models.PROTECT, related_name='client_history_offer', blank=False, null=False)
+
+            class Meta:
+                db_table = 'history_offers'
+    ```
 
 - PROPOSTA:
 *** Regra do Projeto: um cliente só poderá enviar uma proposta (com a mesma oferta) a cada 30 dias 
@@ -43,6 +80,18 @@
 	last_send | date | 
 	proposal_id | int | 
 	message | string | max:200
+
+    ```python
+    class ProposalModel(models.Model):
+        client = models.ForeignKey(ClientModel, on_delete=models.PROTECT, related_name='proposal_client', blank=False, null=False)
+        offer = models.ForeignKey(OfferModel, on_delete=models.PROTECT, related_name='proposal_offer', blank=False, null=False)
+        last_send = models.DateField(blank=False, null=False)
+        proposal_id = models.PositiveIntegerField(blank=True, null=False)
+        message = models.CharField(max_length=200, blank=True, null=False)
+        
+        class Meta:
+            db_table = 'proposal'
+    ```
 
 
 ### Criar serializadores pra conversão de dados (BancoDeDados <-> aplicação)
