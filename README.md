@@ -460,3 +460,17 @@
     {"detail": "JSON parse error - Extra data: line X column Y (char Z)"},
     {"message":str(e)}
     ```
+
+
+# Testar o Projeto
+
+
+- Instalar o mysql e informar os dados em settings.py
+- Instalar o python3-venv
+- Iniciar e ativar ambiente (python3 -m venv env | source env/bin/activate)
+- Entrar a pasta do projeto e instalar as dependências (requirements.txt)
+- Migrar os modelos para o banco de dados
+    - python3 manage.py migrate
+- Por fim... rodar o server: 
+    - python3 manage.py runserver
+
