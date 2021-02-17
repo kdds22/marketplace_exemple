@@ -72,7 +72,7 @@ class ProposalService(object):
         else:
             return {"message":"Oferta enviada não coincide com a base de dados"}
     
-    def search_client(self, proposal_data):
+    def send_proposal(self, proposal_data):
         try:
             self.query_db_client = ClientService.filter_client(self, proposal_data['client'])
             

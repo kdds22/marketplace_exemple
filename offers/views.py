@@ -13,12 +13,12 @@ class OffersListView(generics.ListCreateAPIView):
     serializer_class = OfferSerializer
     
     def post(self, request, *args, **kwargs):
-        offers = OfferService().search(client_data=self.request.data)
+        offers = OfferService().search_offers(client_data=self.request.data)
         return Response({"Offers": offers.serialized})
     
     def get(self, request, *args, **kwargs):
-        offers = OfferService().search_client(client_data=self.request.data, client_modifiable=False)
+        offers = OfferService().search_offers_by_client(client_data=self.request.data, client_modifiable=False)
         if offers != None:
             return Response({"Last Offers by Client": offers.serialized})
         else:
-            return Response({"Error: Client isn't available"})
+            return Response({"message":"Client isn't available"})

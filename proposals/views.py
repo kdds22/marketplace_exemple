@@ -13,7 +13,7 @@ class ProposalsListView(generics.ListCreateAPIView):
     serializer_class = ProposalSerializer
     
     def post(self, request, *args, **kwargs):
-        proposals = ProposalService().search_client(proposal_data=self.request.data)
+        proposals = ProposalService().send_proposal(proposal_data=self.request.data)
         if proposals != None:
             return Response({"Last Proposals by Client": proposals["message"]})
         else:

@@ -9,7 +9,7 @@ from offers.serializers import OfferSerializer
 from .client_service import ClientService
 from django.db.models import Count
 
-
+offers_by_client = 5
 class OfferService(object):
     def __init__(self):
         self.query_db = object()
@@ -48,7 +48,7 @@ class OfferService(object):
             history_offers__client__email=client_data['email'],
             history_offers__client__phone=client_data['phone'],
             history_offers__client__monthly_income=client_data['monthly_income']
-            ).annotate(offers_count=Count('history_offers')).order_by('-offers_count')[5:]
+            ).order_by('id').reverse()[:offers_by_client]
 
     def filter_offer(self, proposal_data, history_offers_id):
         return OfferModel.objects.filter(
@@ -61,7 +61,7 @@ class OfferService(object):
             history_offers__id=history_offers_id
         )
 
-    def search(self, client_data, client_modifiable=True):
+    def search_offers(self, client_data, client_modifiable=True):
         self.instance_client = ClientService.instance_client(self, client=client_data)
         
         self.query_db = self.filter_history_offer(client_data,False)
@@ -78,18 +78,20 @@ class OfferService(object):
             return self.search(client_data=client_data, client_modifiable=False)
         
         
-    def search_client(self, client_data, client_modifiable=True):        
+    def search_offers_by_client(self, client_data, client_modifiable=True):        
         self.query_db_client = ClientService.filter_client(self, client_data=client_data)
         
         if self.query_db_client.exists():
             
             self.query_db = self.filter_history_offer(client_data,True)
             
-            if self.query_db.exists():
-                serial = OfferSerializer(self.query_db, many=True)
-                self.serialized = serial.data
-                return self
-            else:
+            try:
+                if self.query_db.exists():
+                    serial = OfferSerializer(self.query_db, many=True)
+                    self.serialized = serial.data
+                    return self
+                else: return None
+            except Exception as e:
                 return None
         else:
             return None
