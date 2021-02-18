@@ -75,7 +75,7 @@ class OfferService(object):
             new_offers_list_decoded = json.loads(new_offers_list.text)
             offers = new_offers_list_decoded['offers']
             self.save(offers_data=offers, client_instance=self.instance_client)
-            return self.search(client_data=client_data, client_modifiable=False)
+            return self.search_offers(client_data=client_data, client_modifiable=False)
         
         
     def search_offers_by_client(self, client_data, client_modifiable=True):        
